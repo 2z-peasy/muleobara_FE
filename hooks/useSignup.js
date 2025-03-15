@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native"
 import axios from "axios"
 import baseUrl from "../api/baseURL";
 import { useLogin } from "./useLogin";
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 
 export const useSignup = () => {
@@ -22,8 +23,24 @@ export const useSignup = () => {
     }
   }
 
+  const handleNickname = async(nickname) => {
+    try {
+      const token = await AsyncStorage.getItem('accessToken')
+      const response = await baseUrl.put('/users/nickname',{
+        nickname:nickname
+      },{
+        Authorization:`Bearer ${token}`
+      })
+      console.log(response)
+      navigation.navigate("LogIn")
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return {
-    handleSignup
+    handleSignup,
+    handleNickname
   }
 }
 
