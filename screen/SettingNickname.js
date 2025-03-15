@@ -3,44 +3,13 @@ import { Dimensions, SafeAreaView, View } from 'react-native'
 import { styled } from 'styled-components';
 import MarginVertical from '../components/MarginVertical';
 import { useNavigation } from '@react-navigation/native';
+import { useSignup } from '../hooks/useSignup';
 
 const SettingNickname = () => {
   const [nickname, setNickname] = useState("");
   const navigation = useNavigation();
-  const handleSignUp = async () => {
-    setError(null);
-
-    if (password !== confirmPassword) {
-      setError("비밀번호가 일치하지 않습니다.");
-      return;
-    }
-
-    const requestData = {
-      email,
-      password,
-      nickname,
-    };
-
-    try {
-      const response = await axios.post(
-        `http://49.50.163.226:8080/users/join`,
-        requestData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const { message, nickname: registeredNickname } = response.data;
-      alert(`${registeredNickname}님, ${message}`);
-      navigation.navigate("Login"); // 로그인 화면으로 이동
-    } catch (err) {
-      const errorMessage =
-        err.response?.data?.["error-message"] || "회원가입 실패";
-      setError(errorMessage);
-    }
-  };
+  const {handleNickname} = useSignup();
+  const isValid = nickname.length > 0
 
   return (
     <SafeAreaView style={{backgroundColor:"#fff", width:Dimensions.get('screen').height}}>
@@ -56,7 +25,7 @@ const SettingNickname = () => {
         <BorderLine/>
         <MarginVertical margin={350}/>
         <Img/>
-        <NextButton style={{backgroundColor:nickname.length > 0 ? "#F7C7A7" : "#E8EAEA"}} onPress={() => navigation.navigate("LogIn")}>
+        <NextButton style={{backgroundColor:isValid? "#F7C7A7" : "#E8EAEA"}} onPress={() => {if(isValid){handleNickname(nickname)}}}>
           <NextButtonText>다음</NextButtonText>
         </NextButton>
       </Body>

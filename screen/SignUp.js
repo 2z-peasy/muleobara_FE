@@ -4,6 +4,7 @@ import styled from "styled-components/native";
 import axios from "axios";
 import { Dimensions, SafeAreaView } from "react-native";
 import MarginVertical from "../components/MarginVertical";
+import { useSignup } from "../hooks/useSignup";
 
 const height = Dimensions.get('screen').height;
 
@@ -14,12 +15,14 @@ const SignUp = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
   const navigation = useNavigation();
+  const {handleSignup} = useSignup();
+  const isValid = email.length > 0 && password.length > 0 && password === confirmPassword
 
   
 
   useEffect(() => {
-    console.log(height)
-  },[])
+    console.log(isValid)
+  },[email,password,confirmPassword])
 
   return (
     <SafeAreaView style={{backgroundColor:"white"}}>
@@ -36,24 +39,24 @@ const SignUp = () => {
         <Input
           placeholder="이메일"
           value={email}
-          onChangeText={setEmail}
+          onChange={(e) => setEmail(e.nativeEvent.text)}
           keyboardType="email-address"
         />
         <Input
           placeholder="비밀번호"
           value={password}
-          onChangeText={setPassword}
+          onChange={(e) => setPassword(e.nativeEvent.text)}
           secureTextEntry
         />
         <Input
           placeholder="비밀번호 확인"
           value={confirmPassword}
-          onChangeText={setConfirmPassword}
+          onChange={(e) => setConfirmPassword(e.nativeEvent.text)}
           secureTextEntry
         />
         </Form>
         <MarginVertical margin={40}/>
-        <SubmitButton onPress={() => navigation.navigate("SettingNickname")}>
+        <SubmitButton onPress={() => handleSignup(email,password)} style={{backgroundColor:isValid ? "#f7c7a7":"#E8EAEA" }}>
           <SubmitButtonText>다음</SubmitButtonText>
         </SubmitButton>
         {error && <ErrorMessage>{error}</ErrorMessage>}
@@ -122,7 +125,6 @@ const SubmitButton = styled.TouchableOpacity`
   width: 300px;
   padding: 15px;
   border-radius: 25px;
-  background-color: #f7c7a7;
   align-items: center;
 `;
 

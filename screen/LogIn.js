@@ -3,6 +3,7 @@ import { Alert, Dimensions, SafeAreaView } from "react-native";
 import styled from "styled-components/native";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
+import { useLogin } from "../hooks/useLogin";
 
 
 const LogIn = () => {
@@ -10,33 +11,11 @@ const LogIn = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const navigation = useNavigation();
+  const {handleLogin} = useLogin();
+  const isValid = email.length > 0 && password.length>0
   
 
-  const handleLogin = async () => {
-    setError(null); // 에러 초기화
-
-    try {
-      const response = await axios.post(
-        `http://49.50.163.226:8080/users/login`,
-        { email, password },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const { message, nickname, userId, testYN } = response.data;
-      Alert.alert(`안녕하세요, ${nickname}님!`);
-      setUserId(userId);
-      testYN === "Y" ? navigation.navigate("Main") : navigation.navigate("Test");
-    } catch (err) {
-      const errorMessage = err.response?.data?.message || "로그인 실패";
-      setError(errorMessage);
-
-    }
-  };
-
+  
   return (
     <SafeAreaView style={{backgroundColor:"#fff"}}>
     <Container>
@@ -52,16 +31,20 @@ const LogIn = () => {
         <Input
           placeholder="이메일"
           value={email}
-          onChangeText={setEmail}
+          onChange={(e) => setEmail(e.nativeEvent.text)}
           keyboardType="email-address"
         />
         <Input
           placeholder="비밀번호"
           value={password}
-          onChangeText={setPassword}
+          onChange={(e) => setPassword(e.nativeEvent.text)}
           secureTextEntry
         />
-        <SubmitButton onPress={() => navigation.navigate("StartMbti")}>
+        <SubmitButton onPress={() => {
+          if(isValid){
+            handleLogin(email,password)
+          }
+        }}>
           <SubmitButtonText>로그인하기</SubmitButtonText>
         </SubmitButton>
         {error && <ErrorMessage>{error}</ErrorMessage>}
