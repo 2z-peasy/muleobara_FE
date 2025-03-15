@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { Dimensions, SafeAreaView, View } from 'react-native'
 import { styled } from 'styled-components'
 import MarginVertical from '../components/MarginVertical'
+import { useMbti } from '../hooks/useMbti'
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { useNavigation } from '@react-navigation/native'
 
 const StartMbti = () => {
   const inputArray = [0, 0, 0, 0]
@@ -9,6 +12,7 @@ const StartMbti = () => {
   const [focusIndex, setFocusIndex] = useState(0); // 현재 포커스된 인덱스를 추적
   const stepText = ["first", "second", "third", "fourth"]
   const mbtiText = [["E", "I"], ["S", "N"], ["F", "T"], ["P", "J"]]
+  const navigation = useNavigation();
 
   useEffect(() => {
     console.log(mbti)
@@ -64,6 +68,10 @@ const StartMbti = () => {
             </View>
           ))}
         </InputBox>
+        
+        <NextButton onPress={() => navigation.navigate('MbtiTest', {first:mbti.first, second:mbti.second, third:mbti.third, fourth:mbti.fourth})}>
+          <AntDesign name="arrowright" size={24} color="black" />
+        </NextButton>
       </Body>
     </SafeAreaView>
   )
@@ -149,4 +157,10 @@ const DropDownEl = styled.TouchableOpacity`
   display:flex;
   justify-content:center;
   align-items:center;
+`
+
+const NextButton = styled.TouchableOpacity`
+  position:absolute;
+  bottom:100px;
+  right:40;
 `
