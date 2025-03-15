@@ -1,17 +1,21 @@
 import { useNavigation } from "@react-navigation/native"
 import axios from "axios"
+import baseUrl from "../api/baseURL";
+import { useLogin } from "./useLogin";
 
 
 export const useSignup = () => {
   const navigation = useNavigation();
+  const {handleLogin} = useLogin();
 
   const handleSignup = async(email,password) => {
     try {
-      const response = await axios.post("http://52.79.42.211:8080/signup",{
+      const response = await baseUrl.post("/signup",{
         email:email,
         password:password
       })
       console.log(response.data)
+      handleLogin(email,password)
       navigation.navigate('SettingNickname')
     } catch (error) {
       console.log(error)
