@@ -18,7 +18,7 @@ const StackNavigation = () => {
 
   return (
     <Stack.Navigator
-    initialRouteName='SettingNickname'>
+    initialRouteName='StartMbti'>
       <Stack.Screen name="Main" component={Main} options={{headerShown:false}}/>
       <Stack.Screen name='Tabs' component={TabNavigation} options={{headerShown:false}}/>
       <Stack.Screen name="Start" component={Start} options={{headerShown:false}}/>

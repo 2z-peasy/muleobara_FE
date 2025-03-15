@@ -1,14 +1,27 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Dimensions, SafeAreaView, View } from 'react-native'
 import { styled } from 'styled-components'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import MarginVertical from '../components/MarginVertical';
 import SlideBar from '../components/SlideBar';
 import { useNavigation } from '@react-navigation/native';
+import { useMbti } from '../hooks/useMbti';
 
-const MbtiTest = () => {
-  const mbtiText = ["내향적(I)", "직관적(N)", "감정적(F)", "인식적(P)"]
+const MbtiTest = ({route}) => {
+  
   const navigation = useNavigation();
+  const {first,second,third,fourth} = route.params;
+  const {handleMbti} = useMbti();
+  const mbtiText = [first === "I" ? "내향적(I)" : '외향적(E)', second === "N" ? "직관적(N)" : "감각적(S)", third === "F" ? "감정적(F)" : "사고적(T)", fourth === "P" ? "인식적(P)" : "판단적(J)"]
+  const [eiValue, setEiValue] = useState(50);
+  const [nsValue, setNsValue] = useState(50);
+  const [tpValue, setTpValue] = useState(50);
+  const [pjValue, setPjValue] = useState(50);
+
+  useEffect(() => {
+    console.log(eiValue,nsValue,tpValue,pjValue)
+  }, [eiValue,nsValue,tpValue,pjValue])
+  
 
   return (
     <SafeAreaView>
@@ -26,7 +39,10 @@ const MbtiTest = () => {
           {mbtiText.map((el, index )=> {
             return(
               <TestEl key={index}>
-                <SlideBar text={el}/>
+                <SlideBar
+                  text={el}
+                  value={index===1 ? eiValue : index===2 ? nsValue : index === 3 ? tpValue : pjValue}
+                  setValue={index===1 ? setEiValue : index===2 ? setNsValue : index === 3 ? setTpValue : setPjValue}/>
               </TestEl>
             )
           })}
@@ -34,7 +50,16 @@ const MbtiTest = () => {
         </TestArea>
       </MbtiTestBody>
       <View style={{width:"100%", justifyContent:'center', alignItems:'center', position:'absolute', bottom:150}}>
-      <SubmitButton onPress={() => navigation.navigate("Main")}>
+      <SubmitButton onPress={() => handleMbti({
+        eiType: first,
+        eiPercent: eiValue,
+        nsType: second,
+        nsPercent: nsValue,
+        tfType: third,
+        tfPercent: tpValue,
+        pjType: fourth,
+        pjPercent: pjValue  
+      })}>
         <ButtonText>제출하기</ButtonText>
       </SubmitButton>
       </View>
