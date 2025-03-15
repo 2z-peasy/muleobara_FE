@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import axios from 'axios';
-import { Text } from 'react-native';
+import { ScrollView, Text } from 'react-native';
 
 const Choice = ({ myChat, setMyChat, aiResponse, setAiResponse, isResponse, setIsResponse, choices, setChoices, setting, setSetting, setGptAnswer }) => {
   const [itemNum, setItemNum] = useState([]);
@@ -59,10 +59,12 @@ const Choice = ({ myChat, setMyChat, aiResponse, setAiResponse, isResponse, setI
       ) : (
         <ChoiceBody>
           <ItemChoiceBody>
+            <ScrollView horizontal={true} style={{display:'flex'}} showsHorizontalScrollIndicator={false}>
             <ItemContents
               value={choice1}
               onChangeText={(value) => handleChoiceChange(value, setChoice1)}
               onBlur={() => handleBlur(choice1)}
+              horizontal={true}
             />
             <VsText>VS</VsText>
             <ItemContents
@@ -83,6 +85,7 @@ const Choice = ({ myChat, setMyChat, aiResponse, setAiResponse, isResponse, setI
             <ItemPlusButton onPress={itemAdd}>
               <VsText>+</VsText>
             </ItemPlusButton>
+            </ScrollView>
           </ItemChoiceBody>
           <OptionBody>
             <OptionInput
@@ -115,10 +118,11 @@ const ChoiceBody = styled.View`
 `;
 
 const ItemChoiceBody = styled.View`
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction:row;
   margin-bottom: 20px;
+  display:flex;
+  width:100%;
+  justif-content:center;
   align-items:center;
 `;
 
