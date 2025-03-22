@@ -16,7 +16,7 @@ export const useSignup = () => {
         password:password
       })
       console.log(response.data)
-      handleLogin(email,password)
+      handleLogin(email,password, "first")
       navigation.navigate('SettingNickname')
     } catch (error) {
       console.log(error)
@@ -32,7 +32,7 @@ export const useSignup = () => {
         Authorization:`Bearer ${token}`
       })
       console.log(response)
-      navigation.navigate("LogIn")
+      navigation.navigate("StartMbti")
     } catch (error) {
       console.log(error)
     }

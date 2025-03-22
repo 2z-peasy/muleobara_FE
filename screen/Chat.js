@@ -14,7 +14,7 @@ const Chat = () => {
   const [setting, setSetting] = useState("");
   const [gptAnswer, setGptAnswer] = useState("");
 
-  const [aiResponse, setAiResponse] = useState({data:{}});
+  const [aiResponse, setAiResponse] = useState({});
 
   return (
     <SafeAreaView style={{backgroundColor:'white'}}>

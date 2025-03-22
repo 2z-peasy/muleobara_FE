@@ -25,7 +25,7 @@ const SettingNickname = () => {
         <BorderLine/>
         <MarginVertical margin={350}/>
         <Img/>
-        <NextButton style={{backgroundColor:isValid? "#F7C7A7" : "#E8EAEA"}} onPress={() => {if(isValid){handleNickname(nickname)}}}>
+        <NextButton style={{backgroundColor:isValid? "#F7C7A7" : "#E8EAEA"}} onPress={() => {if(isValid){handleNickname(nickname);navigation.navigate("StartMbti")}}}>
           <NextButtonText>다음</NextButtonText>
         </NextButton>
       </Body>
