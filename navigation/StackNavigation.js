@@ -18,14 +18,14 @@ const StackNavigation = () => {
 
   return (
     <Stack.Navigator
-    initialRouteName='StartMbti'>
+    initialRouteName='Main'>
       <Stack.Screen name="Main" component={Main} options={{headerShown:false}}/>
       <Stack.Screen name='Tabs' component={TabNavigation} options={{headerShown:false}}/>
       <Stack.Screen name="Start" component={Start} options={{headerShown:false}}/>
       <Stack.Screen name="SignUp" component={SignUp} options={{headerShown:false}}/>
       <Stack.Screen name="LogIn" component={LogIn} options={{headerShown:false}}/>
       <Stack.Screen name="Chat" component={Chat} options={{headerShown:false}}/>
-      <Stack.Screen name='Test' component={Test} options={{headerShown:false}}/>
+      {/* <Stack.Screen name='Test' component={Test} options={{headerShown:false}}/> */}
       <Stack.Screen name="SettingNickname" component={SettingNickname} options={{headerShown:false}}/>
       <Stack.Screen name="StartMbti" component={StartMbti} options={{headerShown:false}}/>
       <Stack.Screen name="MbtiTest" component={MbtiTest} options={{headerShown:false}}/>

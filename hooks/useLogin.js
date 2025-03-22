@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 export const useLogin = () => {
   const navigation = useNavigation();
 
-  const handleLogin = async (email,password) => {
+  const handleLogin = async (email,password,version) => {
     try {
       const response = await baseUrl.post('/login',{
         email:email,
@@ -16,7 +16,7 @@ export const useLogin = () => {
       const {access_token, refresh_token} = response.data
       AsyncStorage.setItem('accessToken',access_token)
       AsyncStorage.setItem('refreshToken',refresh_token)
-      navigation.navigate('Tabs')
+      if(version!=='first')navigation.navigate('Tabs')
     } catch (err) {
       const errorMessage = err.response?.data?.message || "로그인 실패";
       setError(errorMessage);

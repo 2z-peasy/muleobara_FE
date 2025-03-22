@@ -12,7 +12,8 @@ const Tab = createBottomTabNavigator();
 const TabNavigation = () => {
   return (
     <Tab.Navigator screenOptions={({ route }) => ({
-      headerShown: false})}>
+      headerShown: false})}
+      initialRouteName='Main'>
       <Tab.Screen name='Test' component={Test}/>
       <Tab.Screen name='Main' component={Main} options={{headerShown:false}}/>
       <Tab.Screen name="MyPage" component={MyPage} options={{headerShown:false}}/>
