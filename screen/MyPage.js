@@ -14,6 +14,7 @@ function MyPage() {
   const [loading, setLoading] = useState(true); // 로딩 상태
   const [error, setError] = useState(null); // 에러 상태
   const navigation = useNavigation();
+  
 
   useEffect(() => {
     // 데이터 가져오기
