@@ -70,7 +70,7 @@ const Comunity = () => {
                     <Image source={fire_icon} style={{width:30, height:30}}/>
                     <Text style={{fontWeight:600, fontSize:16}}>{el[5]}</Text>
                   </LikeEl>
-                  <LikeEl onPress={() => navigation.navigate("DetailPost")}>
+                  <LikeEl onPress={() => navigation.navigate("DetailPost", {contents:el})}>
                     <Image source={comment_icon} style={{width:32, height:32}}/>
                     <Text style={{fontWeight:600, fontSize:16}}>{el[6]}</Text>
                   </LikeEl>
