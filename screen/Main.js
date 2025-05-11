@@ -8,6 +8,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import MarginVertical from '../components/MarginVertical'
 import main_icon_1 from '../assets/main_icon_1.png';
+import character3 from '../assets/character4.png';
 
 const width = Dimensions.get('screen').width;
 const height = Dimensions.get('screen').height;
@@ -23,15 +24,20 @@ const Main = () => {
       <MainBody>
         <ScrollView showsVerticalScrollIndicator={false}>
         <MainHeader>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate("Notification")}>
             <Ionicons name="notifications-outline" size={30} color="black" />
           </TouchableOpacity>
         </MainHeader>
         <MainTitle>질문할수록 성장하는 카피바라</MainTitle>
         <MarginVertical margin={10}/>
         <MainContentsBody style={{height:280}}>
+          <View style={{width:'100%', justifyContent:'center',alignItems:'center'}}>
+          <Image source={character3} style={{width:180, height:180, resizeMode:'contain'}}/>
+          </View>
           {/* 이미지 */}
-          <TouchableOpacity style={{flexDirection:'row',gap:3, justifyContent:'flex-end',alignItems:'center', position:'absolute',bottom:20,right:15}}>
+          <TouchableOpacity
+            style={{flexDirection:'row',gap:3, justifyContent:'flex-end',alignItems:'center', position:'absolute',bottom:20,right:15}}
+            onPress={() => navigation.navigate("Chat")}>
             <MainTitle>키우러 가기</MainTitle>
             <AntDesign name="arrowright" size={24} color="black" />
           </TouchableOpacity>
@@ -44,7 +50,9 @@ const Main = () => {
             <CurrentQuest>
               <MainText>2/10</MainText>
             </CurrentQuest>
-            <AntDesign name="arrowright" size={24} color="black" />
+            <TouchableOpacity onPress={() => navigation.navigate("Mission")}>
+              <AntDesign name="arrowright" size={24} color="black" />
+            </TouchableOpacity>
           </View>
           <MarginVertical margin={20}/>
          <MainText>
@@ -77,6 +85,7 @@ const Main = () => {
         <MarginVertical margin={40}/>
         <MainTitle>다른 사람들과 더 고민해보기</MainTitle>
         <MarginVertical margin={10}/>
+        <TouchableOpacity onPress={() => navigation.navigate("Comunity")}>
         <MainContentsBody>
           <View style={{flexDirection:'row', justifyContent:'center', alignItems:'center', gap:20}}>
           <View style={{borderRadius:'50%', backgroundColor:'#D9D9D9', width:50, height:50, justifyContent:'center',alignItems:'center'}}>
@@ -88,7 +97,8 @@ const Main = () => {
           </View>
           </View>
         </MainContentsBody>
-        <MarginVertical margin={100}/>
+        </TouchableOpacity>
+        <MarginVertical margin={180}/>
         </ScrollView>
       </MainBody>
       

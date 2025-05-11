@@ -2,40 +2,23 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import axios from 'axios';
 import { ScrollView, Text } from 'react-native';
+import { useChat } from '../hooks/useChat';
 
 const Choice = ({ myChat, setMyChat, aiResponse, setAiResponse, isResponse, setIsResponse, choices, setChoices, setting, setSetting, setGptAnswer }) => {
   const [itemNum, setItemNum] = useState([]);
-  const [choice1, setChoice1] = useState('');
-  const [choice2, setChoice2] = useState('');
-  const [choice3, setChoice3] = useState('');
+  const [choiceList, setChoiceList] = useState([])
+  const {handleChatSubmit} = useChat();
+  const [choice1, setChoice1] = useState("")
+  const [choice2, setChoice2] = useState("")
+  const [choice3, setChoice3] = useState("")
+  const [choice4, setChoice4] = useState("")
 
   const itemAdd = () => {
     const newItem = `Item ${itemNum.length + 1}`;
     setItemNum([...itemNum, newItem]);
   };
 
-  async function handleChatSubmit() {
-    try {
-      const response = await axios.post(
-        `http://49.50.163.226:8080/recommends/request`,
-        {
-          userId: 2,
-          setting: setting,
-          choices: choices,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      const data = response.data;
-      setAiResponse(data);
-      setIsResponse(true);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  
 
   const handleChoiceChange = (value, setChoice) => {
     setChoice(value);
@@ -62,23 +45,23 @@ const Choice = ({ myChat, setMyChat, aiResponse, setAiResponse, isResponse, setI
             <ScrollView horizontal={true} style={{display:'flex'}} showsHorizontalScrollIndicator={false}>
             <ItemContents
               value={choice1}
-              onChangeText={(value) => handleChoiceChange(value, setChoice1)}
-              onBlur={() => handleBlur(choice1)}
+              onChangeText={(value) => setChoice1(value)}
+              onBlur={() => {}}
               horizontal={true}
             />
             <VsText>VS</VsText>
             <ItemContents
               value={choice2}
-              onChangeText={(value) => handleChoiceChange(value, setChoice2)}
-              onBlur={() => handleBlur(choice2)}
+              onChangeText={(value) => setChoice2(value)}
+              onBlur={() => {}}
             />
             {itemNum.map((item, index) => (
               <React.Fragment key={index}>
                 <VsText>VS</VsText>
                 <ItemContents
                   value={choice3}
-                  onChangeText={(value) => handleChoiceChange(value, setChoice3)}
-                  onBlur={() => handleBlur(choice3)}
+                  onChangeText={(value) => setChoice3(value)}
+                  onBlur={() =>{}}
                 />
               </React.Fragment>
             ))}
@@ -93,7 +76,7 @@ const Choice = ({ myChat, setMyChat, aiResponse, setAiResponse, isResponse, setI
               value={setting}
               onChangeText={handleSettingChange}
             />
-            <OptionButton onPress={handleChatSubmit}>
+            <OptionButton onPress={() => {handleChatSubmit(setting,[choice1, choice2, choice3 ? choice3 : null] )}}>
               <OptionButtonText>→</OptionButtonText>
             </OptionButton>
           </OptionBody>
@@ -180,7 +163,7 @@ const OptionButton = styled.TouchableOpacity`
 `;
 
 const OptionButtonText = styled.Text`
-  color: #fff;
+  color: white;
   font-size: 24px;
 `;
 

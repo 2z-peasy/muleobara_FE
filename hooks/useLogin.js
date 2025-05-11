@@ -17,9 +17,10 @@ export const useLogin = () => {
       AsyncStorage.setItem('accessToken',access_token)
       AsyncStorage.setItem('refreshToken',refresh_token)
       if(version!=='first')navigation.navigate('Tabs')
-    } catch (err) {
-      const errorMessage = err.response?.data?.message || "로그인 실패";
-      setError(errorMessage);
+    } catch (error) {
+      // const errorMessage = err.response?.data?.message || "로그인 실패";
+      // setError(errorMessage);
+      console.log(error)
 
     }
   };
