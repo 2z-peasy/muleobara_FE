@@ -4,6 +4,7 @@ import { styled } from 'styled-components';
 import MarginVertical from '../components/MarginVertical';
 import { useNavigation } from '@react-navigation/native';
 import { useSignup } from '../hooks/useSignup';
+import character2 from '../assets/character2.png';
 
 const SettingNickname = () => {
   const [nickname, setNickname] = useState("");
@@ -23,8 +24,9 @@ const SettingNickname = () => {
         <MarginVertical margin={50}/>
         <Input placeholder={"닉네임을 입력해주세요"} value={nickname} onChange={(e) => setNickname(e.nativeEvent.text)}/>
         <BorderLine/>
-        <MarginVertical margin={350}/>
-        <Img/>
+        <View style={{width:'100%',height:'50%', justifyContent:'center',alignItems:'center'}}>
+          <Img source={character2}/>
+        </View>
         <NextButton style={{backgroundColor:isValid? "#F7C7A7" : "#E8EAEA"}} onPress={() => {if(isValid){handleNickname(nickname);navigation.navigate("StartMbti")}}}>
           <NextButtonText>다음</NextButtonText>
         </NextButton>
@@ -75,7 +77,8 @@ const BorderLine = styled.View`
 `
 
 const Img = styled.Image`
-  
+  width:220px;
+  height:175px;
 `
 
 const NextButton = styled.TouchableOpacity`

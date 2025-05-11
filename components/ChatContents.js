@@ -8,10 +8,10 @@ const ChatContents = ({myChat, setMyChat, aiResponse, setAiResponse, choices, se
   const [isHeart, setIsHeart] = useState(false);
   const [noHeart, setNoHeart] = useState(true);
   const [chatNum, setChatNum] = useState(0);
-  // const aiChoice = JSON.stringify(aiResponse.data.choice);
-  const aiChoice = `${aiResponse.data.choice}`;
-  const choiceReason = `${aiResponse.data.reason}`;
-  const totalResponse = `${aiChoice} \n ${choiceReason}`;
+  // const aiChoice = JSON.stringify(aiResponse.data.choices);
+  // const aiChoice = `${aiResponse.data.choice}`;
+  // const choiceReason = `${aiResponse.data.reason}`;
+  const totalResponse = ``;
   
 
 
@@ -26,7 +26,7 @@ const ChatContents = ({myChat, setMyChat, aiResponse, setAiResponse, choices, se
       <View style={{position:'absolute', top:80, left:10}}>
       <SpeechBubble text={"안녕하세요 당신의 결정을 도울 물어바라입니다 만나서 반가워요!"} isHeart={isHeart} setIsHeart={setIsHeart} noHeart={noHeart} setNoHeart={setNoHeart} choices={choices} setChoices={setChoices}></SpeechBubble>
       <SpeechBubble text={"채팅창에는 현재 상황이나 상태와 관련된 변수를, 네모 빈칸에는 고민되는 항목을 입력해주세요!"} isHeart={isHeart} setIsHeart={setIsHeart} noHeart={noHeart} setNoHeart={setNoHeart} choices={choices} setChoices={setChoices}/>
-      {totalResponse === undefined ? 
+      {totalResponse.length  === 0 ? 
       <></>:
       <>
         <SpeechBubble text={totalResponse} isHeart={isHeart} setIsHeart={setIsHeart} choices={choices} setChoices={setChoices} gptAnswer={gptAnswer}></SpeechBubble>

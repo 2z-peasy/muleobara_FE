@@ -7,23 +7,26 @@ export const useMbti = () => {
   const handleMbti = async(mbtiInfo) => {
     try {
       const token = await AsyncStorage.getItem('accessToken')
-      const response = await baseUrl.post('/users/mbti/',{
-        eiType:mbtiInfo.eiType,
-        eiPercent:mbtiInfo.eiPercent,
-        nsType: mbtiInfo.nsType,
-        nsPercent: mbtiInfo.nsPercent,
-        tfType: mbtiInfo.tfType,
-        tfPercent: mbtiInfo.tfPercent,
-        pjType: mbtiInfo.pjType,
-        pjPercent: mbtiInfo.pjPercent  
+      const response = await baseUrl.post('/users/mbti',{
+          "eiType": mbtiInfo.eiType,
+          "eiPercent": mbtiInfo.eiPercent,
+          "nsType": mbtiInfo.nsType,
+          "nsPercent": mbtiInfo.nsPercent,
+          "tfType": mbtiInfo.tfType,
+          "tfPercent": mbtiInfo.tfPercent,
+          "pjType": mbtiInfo.pjType,
+          "pjPercent": mbtiInfo.pjPercent
       },{
-        Authorization:`Bearer ${token}`
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
       })
       console.log(response)
       navigation.navigate("Main")
     } catch (error) {
       console.log(error)
       console.log('mbtiInfo',mbtiInfo)
+
     }
   }
 

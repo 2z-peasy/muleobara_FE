@@ -13,6 +13,9 @@ import StartMbti from '../screen/StartMbti';
 import MbtiTest from '../screen/MbtiTest';
 import Comunity from '../screen/Comunity';
 import DetailPost from '../screen/DetailPost';
+import Mission from '../screen/Mission';
+import Notification from '../screen/Notification';
+import BalanceGameResult from '../screen/BalanceGameResult';
 
 
 const StackNavigation = () => {
@@ -20,7 +23,7 @@ const StackNavigation = () => {
 
   return (
     <Stack.Navigator
-    initialRouteName='Comunity'>
+    initialRouteName='Start'>
       <Stack.Screen name="Main" component={Main} options={{headerShown:false}}/>
       <Stack.Screen name='Tabs' component={TabNavigation} options={{headerShown:false}}/>
       <Stack.Screen name="Start" component={Start} options={{headerShown:false}}/>
@@ -33,6 +36,9 @@ const StackNavigation = () => {
       <Stack.Screen name="MbtiTest" component={MbtiTest} options={{headerShown:false}}/>
       <Stack.Screen name="Comunity" component={Comunity} options={{headerShown:false}}/>
       <Stack.Screen name="DetailPost" component={DetailPost} options={{headerShown:false}}/>
+      <Stack.Screen name="Mission" component={Mission} options={{headerShown:false}}/>
+      <Stack.Screen name="Notification" component={Notification}  options={{headerShown:false}}/>
+      <Stack.Screen name="BalanceGameResult" component={BalanceGameResult} options={{headerShown:false}}/>
     </Stack.Navigator>
   )
 }

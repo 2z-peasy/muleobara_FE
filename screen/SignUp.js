@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import styled from "styled-components/native";
 import axios from "axios";
-import { Dimensions, SafeAreaView } from "react-native";
+import { Dimensions, Image, SafeAreaView } from "react-native";
 import MarginVertical from "../components/MarginVertical";
 import { useSignup } from "../hooks/useSignup";
+import character1 from '../assets/character1.png';
 
 const height = Dimensions.get('screen').height;
 
@@ -31,8 +32,9 @@ const SignUp = () => {
         <BackButton onPress={() => navigation.goBack()}>
           <BackArrow source={require("../assets/backarrow.png")} />
         </BackButton>
-        
       </Header>
+      <Image source={character1} style={{width:130, height:130, resizeMode:'contain', marginLeft:-20}}/>
+      <MarginVertical margin={20}/>
 
       <Form>
         <HeaderTitle>회원가입</HeaderTitle>
@@ -108,7 +110,7 @@ const HeaderTitle = styled.Text`
 `;
 
 const Form = styled.View`
-  margin-top: -120px;
+  
 `;
 
 const Input = styled.TextInput`

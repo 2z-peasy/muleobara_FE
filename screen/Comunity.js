@@ -26,7 +26,7 @@ const Comunity = () => {
             <View style={{width:50, height:50, borderRadius:'50%', backgroundColor:"#FDF1E9", justifyContent:'center', alignItems:'center', position:'absolute', zIndex:2, top:-25}}>
               <Text style={{color:"#FF1010", fontSize:36, fontWeight:600}}>A</Text>
             </View>
-            <BalanceGameEl>
+            <BalanceGameEl onPress={() => navigation.navigate("BalanceGameResult")}>
               <SelectText style={{fontWeight:700}}>평생 돼지고기 먹기</SelectText>
             </BalanceGameEl>
           </BalanceGameElBody>
@@ -34,7 +34,7 @@ const Comunity = () => {
             <View style={{width:50, height:50, borderRadius:'50%', backgroundColor:"#FDF1E9", justifyContent:'center', alignItems:'center', position:'absolute', zIndex:2, top:-25}}>
               <Text style={{color:"#47B2FF", fontSize:36, fontWeight:600}}>B</Text>
             </View>
-            <BalanceGameEl>
+            <BalanceGameEl onPress={() => navigation.navigate("BalanceGameResult")}>
               <SelectText style={{fontWeight:700}}>평생 소고기 먹기</SelectText>
             </BalanceGameEl>
           </BalanceGameElBody>

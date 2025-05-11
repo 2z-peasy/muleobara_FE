@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Dimensions, SafeAreaView, View } from 'react-native'
+import { Dimensions, Image, SafeAreaView, View } from 'react-native'
 import { styled } from 'styled-components'
 import MarginVertical from '../components/MarginVertical'
 import { useMbti } from '../hooks/useMbti'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useNavigation } from '@react-navigation/native'
+import character1 from '../assets/character1.png';
+
 
 const StartMbti = () => {
   const inputArray = [0, 0, 0, 0]
@@ -37,7 +39,9 @@ const StartMbti = () => {
   return (
     <SafeAreaView style={{ backgroundColor: "#fff" }}>
       <Body>
-        <MarginVertical margin={200} />
+        <MarginVertical margin={100}/>
+        <Image source={character1} style={{width:200, height:195}}/>
+        <MarginVertical margin={35}/>
         <Title>당신의 mbti는 무엇인가요?</Title>
         <MarginVertical margin={10} />
         <Text>보다 나은 서비스 이용을 위해 작성해주세요</Text>
