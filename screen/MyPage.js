@@ -1,278 +1,315 @@
-import React, { useState, useEffect } from "react";
-import { useNavigation } from '@react-navigation/native';
-import axios from "axios";
-import { View, Text, Image, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
-import styled from 'styled-components/native';
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, Image, Switch, SafeAreaView } from "react-native";
+import styled, { css } from "styled-components/native";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import { size } from "../util";
 
-function MyPage() {
-  const nickname = "닉네임"; // 사용자 닉네임 예시
-  const chatId = 12345; // 예시 채팅 ID
-  const answer = "추천 음식은 초코라떼입니다."; // 예시 AI 답변
-  const choices = ["딸기라떼", "초코라떼"]; // 예시 선택지
-  const [slides, setSlides] = useState([{title:"딸기라떼vs초코라떼", description:"초코라떼를 추천드려요!"}]); // 슬라이드 데이터 상태
-  const [currentIndex, setCurrentIndex] = useState(0); // 현재 슬라이드 인덱스
-  const [loading, setLoading] = useState(true); // 로딩 상태
-  const [error, setError] = useState(null); // 에러 상태
+export default function MyPage() {
   const navigation = useNavigation();
-  
 
-  useEffect(() => {
-    // 데이터 가져오기
-    const fetchSlides = async () => {
-      try {
-        const response = await axios.get(`https://your-api-url.com/slides`);
-        setSlides(response.data); // 받아온 데이터를 슬라이드 상태로 설정
-        setLoading(false); // 로딩 완료
-      } catch (err) {
-        setError("데이터를 가져오는 데 실패했습니다.");
-        setLoading(false);
-      }
-    };
-
-    fetchSlides();
-  }, []);
-
-  const handlePrevSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === 0 ? slides.length - 1 : prevIndex - 1));
-  };
-
-  const handleNextSlide = () => {
-    setCurrentIndex((prevIndex) => (prevIndex === slides.length - 1 ? 0 : prevIndex + 1));
-  };
-
-  if (loading) {
-    return <LoadingText>로딩 중...</LoadingText>; // 로딩 중 메시지
-  }
-
-  if (error) {
-    return <ErrorMessage>{error}</ErrorMessage>; // 에러 메시지
-  }
-
-  // 하트 보관함에 저장하는 함수
-  const saveToHeart = async () => {
-    const token = "your_jwt_token"; // JWT 토큰 설정
-
-    const data = {
-      nickname: nickname,
-      chat_id: chatId,
-      answer: answer,
-      choices: choices,
-    };
-
-    try {
-      const response = await axios.post(
-        "https://your-api-url.com/hearts/save",
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log("저장 성공:", response.data);
-      alert("하트 보관함에 저장되었습니다!");
-    } catch (error) {
-      console.error("저장 실패:", error.response?.data || error.message);
-      alert("저장 중 문제가 발생했습니다.");
-    }
-  };
+  // “알림설정” 토글 상태 관리
+  const [isAlarmEnabled, setIsAlarmEnabled] = useState(false);
+  const toggleAlarm = () => setIsAlarmEnabled((prev) => !prev);
 
   return (
     <SafeAreaView style={{backgroundColor:'white'}}>
-    <Container>
-      {/* 상단 네비게이션 바 */}
-      <Navbar>
-        <StatusIcons>
-          <Signal />
-          <Wifi />
-          <Battery />
-        </StatusIcons>
-      </Navbar>
+    <Root>
+      {/* 1. 헤더 (뒤로가기 + 타이틀 없이 화살표만) */}
+      <Header>
+        <BackButton onPress={() => navigation.goBack()}>
+          <Ionicons name="arrow-back" size={24} color="#222" />
+        </BackButton>
+      </Header>
 
-      {/* 사용자 정보 */}
-      <ProfileSection>
-        <ProfileImage>
-          <Image source={require('../assets/mypage.png')} style={{ width: 100, height: 100, borderRadius: 50 }} />
-        </ProfileImage>
-        <WelcomeMessage>{nickname}님 안녕하세요!</WelcomeMessage>
-      </ProfileSection>
+      {/* 2. 상단 버튼들: MBTI 수정 / 상점 / 히든 포인트 */}
+      <TopButtonsContainer>
+        <TopButton>
+          <TopButtonBox>
+            {/* 사각형 빈 박스 */}
+          </TopButtonBox>
+          <TopLabel>MBTI 수정</TopLabel>
+        </TopButton>
+        <TopButton onPress={() => navigation.navigate('Store')}>
+          <TopButtonBox>
+            {/* 사각형 빈 박스 */}
+          </TopButtonBox>
+          <TopLabel>상점</TopLabel>
+        </TopButton>
+        <TopButton onPress={() => navigation.navigate('Achievements')}>
+          <TopButtonBox>
+            {/* 사각형 빈 박스 */}
+          </TopButtonBox>
+          <TopLabel>히든 포인트</TopLabel>
+        </TopButton>
+      </TopButtonsContainer>
 
-      {/* 보관함 섹션 */}
-      <FavoritesSection>
-        <FavoritesTitle>❤️ 보관함</FavoritesTitle>
-        <Slider>
-          <SliderButton onPress={handlePrevSlide}>{"<"}</SliderButton>
-          <SliderContent>
-            <ItemTitle>{slides[currentIndex].title}</ItemTitle>
-            <ItemDescription>{slides[currentIndex].description}</ItemDescription>
-          </SliderContent>
-          <SliderButton onPress={handleNextSlide}>{">"}</SliderButton>
-        </Slider>
+      {/* 3. 구분선 */}
+      <Divider />
 
-        {/* 페이지 표시용 점 */}
-        <PaginationDots>
-          {/* {slides.map((_, index) => (
-            <Dot
-              key={index}
-              active={index === currentIndex}
-              onPress={() => setCurrentIndex(index)}
+      {/* 4. 어플 설정 영역 */}
+      <View style={{width:'100%'}}>
+      <Section>
+        <SectionTitle>어플 설정</SectionTitle>
+
+        <SettingRow>
+          <LeftSide>
+            <SettingLabel>알림설정</SettingLabel>
+            <Switch
+              value={isAlarmEnabled}
+              onValueChange={toggleAlarm}
+              trackColor={{ false: "#ccc", true: "#81b0ff" }}
+              thumbColor={isAlarmEnabled ? "#f5dd4b" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
             />
-          ))} */}
-        </PaginationDots>
-      </FavoritesSection>
+          </LeftSide>
+          <ShareTextContainer onPress={() => { /* 공유 로직 */ }}>
+            <ShareText>어플 공유하기</ShareText>
+          </ShareTextContainer>
+        </SettingRow>
+      </Section>
 
-      {/* 성향 테스트 다시 해보기 버튼 */}
-      <RestartSection>
-        <RestartButton onPress={() => navigation.navigate('StartScreen')}>
-          <RestartButtonText>성향테스트 다시 해보기</RestartButtonText>
-        </RestartButton>
-      </RestartSection>
-    </Container>
+      {/* 5. 계정 설정 영역 */}
+      <Section>
+        <SectionTitle>계정 설정</SectionTitle>
+
+        <AccountRow onPress={() => { /* 로그아웃/탈퇴 처리 */ }}>
+          <AccountText>로그아웃/탈퇴</AccountText>
+        </AccountRow>
+
+        <VersionRow>
+          <AccountText>버전정보</AccountText>
+          <VersionNumber>5.5.2</VersionNumber>
+        </VersionRow>
+      </Section>
+      </View>
+
+      {/* 6. 하단 파란 배경 프로필 영역 */}
+      <BottomProfile>
+        {/* 6-1. 하트 + 카운트 */}
+        <HeartRow>
+          <Ionicons name="heart" size={20} color="#4EA1F3" />
+          <HeartCount> 0</HeartCount>
+          <Ionicons name="heart" size={20} color="#CCCCCC" style={{ marginLeft: 20 }} />
+          <HeartCount> 3</HeartCount>
+        </HeartRow>
+
+        {/* 6-2. 고양이 아바타 */}
+        <AvatarContainer>
+          <AvatarImage source={""} />
+        </AvatarContainer>
+
+        {/* 6-3. 닉네임 */}
+        <NickName>고양이</NickName>
+
+        {/* 6-4. 질문 색싹   |   MBTI */}
+        <InfoRow>
+          <InfoText>질문 색싹</InfoText>
+          <InfoText>ENFP</InfoText>
+        </InfoRow>
+      </BottomProfile>
+    </Root>
     </SafeAreaView>
   );
 }
 
-export default MyPage;
+/* ───────────────────────────────────────────────────────────────────────────────────── 
+   styled-components 정의 
+───────────────────────────────────────────────────────────────────────────────────── */
 
-// 스타일드 컴포넌트
-const Container = styled.View`
-  width: 100%;
-  height: 100%;
-  background-color: #fff;
-  padding: 20px;
-  align-items: center;
+// 최상위 컨테이너
+const Root = styled.View`
+  background-color: #ffffff;
+  width:${size.width}px;
+  height:${size.height}px;
+  padding: 0 10px;
 `;
 
-const Navbar = styled.View`
-  width: 100%;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 10px;
-`;
-
-const StatusIcons = styled.View`
-  flex-direction: row;
-  gap: 10px;
-`;
-
-const Signal = styled.View`
-  width: 15px;
-  height: 15px;
-  background-color: gray;
-  border-radius: 50%;
-`;
-
-const Wifi = styled.View`
-  width: 15px;
-  height: 15px;
-  background-color: gray;
-  border-radius: 50%;
-`;
-
-const Battery = styled.View`
-  width: 15px;
-  height: 15px;
-  background-color: gray;
-  border-radius: 50%;
-`;
-
-const ProfileSection = styled.View`
-  align-items: center;
-  margin-top: 30px;
-`;
-
-const ProfileImage = styled.View`
-  margin-bottom: 10px;
-`;
-
-const WelcomeMessage = styled.Text`
-  font-size: 18px;
-  color: #333;
-  font-weight:700
-`;
-
-const FavoritesSection = styled.View`
-  margin-top: 30px;
-  width: 100%;
-`;
-
-const FavoritesTitle = styled.Text`
-  font-size: 16px;
-  font-weight: bold;
-  color: #d32f2f;
-`;
-
-const Slider = styled.View`
+/* ─── 1. 헤더 ───────────────────────────────────────────────────────────────────── */
+const Header = styled.View`
+  height: 56px;
   flex-direction: row;
   align-items: center;
+  padding-horizontal: 16px;
+`;
+const BackButton = styled.TouchableOpacity`
+  width: 32px;
   justify-content: center;
+  align-items: center;
 `;
 
-const SliderButton = styled.TouchableOpacity`
-  font-size: 24px;
-  padding: 10px;
-`;
-
-const SliderContent = styled.View`
-  width: 60%;
-  text-align: center;
-`;
-
-const ItemTitle = styled.Text`
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 10px;
-`;
-
-const ItemDescription = styled.Text`
-  font-size: 14px;
-  color: #666;
-`;
-
-const PaginationDots = styled.View`
+/* ─── 2. 상단 버튼들: MBTI 수정 / 상점 / 히든 포인트 ───────────────────────────────── */
+// 버튼들을 가로로 세 개, 동일한 너비로 배치
+const TopButtonsContainer = styled.View`
   flex-direction: row;
-  justify-content: center;
-  margin-top: 10px;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 16px;
+  margin-horizontal: 24px;
 `;
 
-const Dot = styled.TouchableOpacity`
-  width: 10px;
-  height: 10px;
-  margin: 0 5px;
-  border-radius: 50%;
-  background-color: ${(props) => (props.active ? 'black' : 'gray')};
+// 개별 버튼: 세로 방향으로 아이콘 박스 + 레이블
+const TopButton = styled.TouchableOpacity`
+  width: 80px;
+  align-items: center;
 `;
 
-const RestartSection = styled.View`
-  position:absolute;
-  bottom:50px;
+/** 사각형 빈 박스 (반지름 8px, 테두리 #4EA1F3) */
+const TopButtonBox = styled.View`
+  width: 64px;
+  height: 64px;
+  border-radius: 8px;
+  border: 1px solid #4ea1f3;
+  background-color: #ffffff;
 `;
 
-const RestartButton = styled.TouchableOpacity`
-  background-color: #ffccbc;
-  padding: 10px 20px;
-  border-radius: 12px;
-  text-align: center;
+/** 박스 아래 레이블 텍스트 */
+const TopLabel = styled.Text`
+  margin-top: 8px;
+  font-size: 13px;
+  color: #222222;
+`;
+
+/* ─── 3. 구분선(Divider) ─────────────────────────────────────────────────────────── */
+const Divider = styled.View`
+  height: 1px;
+  background-color: #e0e0e0;
+  margin-top: 24px;
+  width:${size.width}px;
   
 `;
 
-const RestartButtonText = styled.Text`
-font-size: 16px;
-font-weight: bold;
-`
-
-const LoadingText = styled.Text`
-  font-size: 18px;
-  color: #333;
-  text-align: center;
-  margin-top: 20px;
+/* ─── 4. 어플 설정 영역 ──────────────────────────────────────────────────────────── */
+const Section = styled.View`
+  margin-top: 24px;
+  margin-horizontal: 16px;
 `;
 
-const ErrorMessage = styled.Text`
-  font-size: 18px;
-  color: red;
-  text-align: center;
-  margin-top: 20px;
+/** 섹션 제목 (예: “어플 설정”, “계정 설정”) */
+const SectionTitle = styled.Text`
+  font-size: 16px;
+  font-weight: 600;
+  color: #222222;
+  margin-bottom: 12px;
 `;
 
+/** 설정 항목이 가로로 나란히 있는 Row */
+const SettingRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+/** Row의 왼쪽 부분: “알림설정” + Switch */
+const LeftSide = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+/** 설정 레이블 텍스트 */
+const SettingLabel = styled.Text`
+  font-size: 14px;
+  color: #222222;
+  margin-right: 12px;
+`;
+
+/** 오른쪽 끝의 “어플 공유하기” 텍스트 (터치 가능) */
+const ShareTextContainer = styled.TouchableOpacity``;
+const ShareText = styled.Text`
+  font-size: 14px;
+  color: #4ea1f3;
+`;
+
+/* ─── 5. 계정 설정 영역 ─────────────────────────────────────────────────────────── */
+const AccountRow = styled.TouchableOpacity`
+  padding-vertical: 12px;
+`;
+const AccountText = styled.Text`
+  font-size: 14px;
+  color: #222222;
+`;
+
+/** 버전정보 Row: “버전정보” + “5.5.2” */
+const VersionRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  margin-top: 8px;
+`;
+const VersionNumber = styled.Text`
+  font-size: 14px;
+  color: #999999;
+  margin-left: 8px;
+`;
+
+/* ─── 6. 하단 파란 배경 프로필 영역 ─────────────────────────────────────────────── */
+const BottomProfile = styled.View`
+  position: absolute;
+  bottom: 80px;
+  left: 0;
+  right: 0;
+  background-color: #C2EDFF;
+  align-items: center;
+  padding-top: 20px;
+  padding-bottom: 40px;
+  height:300px;
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+`;
+
+/** 6-1. 하트 + 숫자 Row */
+const HeartRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+/** 하트 옆 숫자 텍스트 */
+const HeartCount = styled.Text`
+  font-size: 14px;
+  color: #222222;
+`;
+
+/** 6-2. 아바타 둥근 컨테이너(흰색) */
+const AvatarContainer = styled.View`
+  margin-top: 12px;
+  width: 96px;
+  height: 96px;
+  border-radius: 48px;
+  background-color: #ffffff;
+  justify-content: center;
+  align-items: center;
+  /* 그림자 (iOS) */
+  shadow-color: #000;
+  shadow-offset: 0px 2px;
+  shadow-opacity: 0.1;
+  shadow-radius: 4px;
+  /* 그림자 (Android) */
+  elevation: 3;
+`;
+
+/** 아바타 이미지(고양이) */
+const AvatarImage = styled.Image`
+  width: 84px;
+  height: 84px;
+  border-radius: 42px;
+  resize-mode: cover;
+`;
+
+/** 6-3. 닉네임 텍스트 */
+const NickName = styled.Text`
+  margin-top: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #222222;
+`;
+
+/** 6-4. “질문 색싹”  |  “ENFP” Row */
+const InfoRow = styled.View`
+  flex-direction: row;
+  align-items: center;
+  margin-top: 8px;
+`;
+const InfoText = styled.Text`
+  font-size: 14px;
+  color: #222222;
+  margin-horizontal: 16px;
+`;

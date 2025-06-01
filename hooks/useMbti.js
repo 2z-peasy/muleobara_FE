@@ -21,7 +21,7 @@ export const useMbti = () => {
           Authorization:`Bearer ${token}`
         }
       })
-      console.log(response)
+      console.log(response.data)
       navigation.navigate("Main")
     } catch (error) {
       console.log(error)
