@@ -4,17 +4,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export const useChat = () => {
 
-  const handleChatSubmit = async(setting,choices) => {
+  const handleChatSubmit = async(setting,choices,setGptAnswer,setStep) => {
     try {
       const token = await AsyncStorage.getItem('accessToken')
       const response = await baseUrl.post(
         `/recommends/request`,
         {
-            setting: "난 시원한게 좋아",
-            choices: [
-              "바다",
-              "산"
-            ],
+            setting: setting,
+            choices: choices,
             
         },
         {
@@ -24,9 +21,25 @@ export const useChat = () => {
         }
       );
       const data = response.data;
-      // setAiResponse(data);
-      // setIsResponse(true);
       console.log(data)
+      setGptAnswer(data.data);
+      setStep(3);
+      
+        const interval = setInterval(() => {
+          setStep((prevStep) => {
+            if (prevStep >= 3 && prevStep < 5) {
+              return prevStep + 1;
+            }
+    
+            clearInterval(interval);
+            return prevStep;
+          });
+        },  1000);
+    
+        
+      
+      
+      console.log(setting, choices)
     } catch (error) {
       console.log(error);
       console.log(setting, choices)
