@@ -16,6 +16,9 @@ import DetailPost from '../screen/DetailPost';
 import Mission from '../screen/Mission';
 import Notification from '../screen/Notification';
 import BalanceGameResult from '../screen/BalanceGameResult';
+import GoalSettingScreen from '../screen/GaolSetting';
+import StoreScreen from '../screen/Store';
+import AchievementsScreen from '../screen/Achievements';
 
 
 const StackNavigation = () => {
@@ -39,6 +42,9 @@ const StackNavigation = () => {
       <Stack.Screen name="Mission" component={Mission} options={{headerShown:false}}/>
       <Stack.Screen name="Notification" component={Notification}  options={{headerShown:false}}/>
       <Stack.Screen name="BalanceGameResult" component={BalanceGameResult} options={{headerShown:false}}/>
+      <Stack.Screen name="GoalSetting" component={GoalSettingScreen} options={{headerShown:false}}/>
+      <Stack.Screen name="Store" component={StoreScreen} options={{headerShown:false}}/>
+      <Stack.Screen name="Achievements" component={AchievementsScreen} options={{headerShown:false}}/>
     </Stack.Navigator>
   )
 }
